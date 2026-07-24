@@ -7,7 +7,7 @@ React 19 + TypeScript + Vite 8 SPA. Six full-screen "screens" mapped to the six 
 - `npm run dev` — Vite dev server
 - `npm run build` — `tsc -b && vite build`
 - `npm run lint` — oxlint
-- Not a git repository (as of 2026-07-24).
+- Git: `main` → `git@github.com:nandiraju/CSS_CUBE.git` (first push 2026-07-24).
 
 ## Architecture (two-layer pattern — do not break this)
 

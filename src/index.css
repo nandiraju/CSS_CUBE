@@ -1,0 +1,197 @@
+/* ==========================================================================
+   Design Tokens & Global Styles
+   Framework layout is in cube-framework/cube-framework.css
+   ========================================================================== */
+
+:root {
+  --surface-card:      #ffffff;
+  --surface-glass:     rgba(255, 255, 255, 0.94);
+  --border-color:      rgba(203, 213, 225, 0.8);
+  --border-highlight:  rgba(99, 102, 241, 0.4);
+  --text-primary:      #0f172a;
+  --text-secondary:    #334155;
+  --text-muted:        #64748b;
+  --accent-primary:    #4f46e5;
+  --accent-hover:      #4338ca;
+  --accent-light:      #eef2ff;
+  --accent-glow:       rgba(99, 102, 241, 0.3);
+
+  --shadow-sm:  0 2px 6px rgba(15, 23, 42, 0.06);
+  --shadow-md:  0 10px 25px -5px rgba(15, 23, 42, 0.1);
+
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-full: 9999px;
+
+  --font-heading: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-body:    'Inter', -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000000;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+input, textarea, select, button {
+  font-family: var(--font-body);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+  outline: none !important;
+}
+
+/* ==========================================================================
+   Screen Layout
+   ========================================================================== */
+
+.screen-container {
+  min-height: 100%;
+  padding: 100px 32px 100px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+  width: fit-content;
+  box-shadow: var(--shadow-sm);
+}
+
+.heading-xl {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  margin-bottom: 16px;
+}
+
+.heading-lg {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.subheading {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 680px;
+  margin-bottom: 32px;
+}
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+
+.card-white {
+  background: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+.card-white:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-highlight);
+  transform: translateY(-2px);
+}
+
+.glass-panel {
+  background: var(--surface-glass);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: var(--accent-primary);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--accent-glow);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.btn-secondary:hover {
+  background: var(--accent-light);
+  border-color: var(--border-highlight);
+  color: var(--accent-primary);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .screen-container { padding: 85px 16px 80px 16px; }
+}

@@ -1,0 +1,272 @@
+/**
+ * CubeNavigator Framework — Stylesheet
+ *
+ * Contains ONLY structural layout primitives needed by the framework.
+ * Does not define any colors, typography, or component-level design.
+ * All visual customization belongs in the consuming app's stylesheet.
+ *
+ * CSS classes:
+ *   .cnav-root       — full-viewport container
+ *   .cnav-screen     — flat interactive screen layer
+ *   .cnav            — built-in navbar wrapper
+ *   .cnav-inner      — navbar pill container
+ *   .cnav-logo       — logo slot
+ *   .cnav-logo-icon  — logo glyph
+ *   .cnav-divider    — vertical separator
+ *   .cnav-links      — button group
+ *   .cnav-link       — individual nav button
+ *   .cnav-link--active — active state
+ *   .cnav-link-icon  — icon wrapper
+ *   .cnav-link-label — text label
+ *   .cnav-badge      — face position badge
+ *   .cnav-badge-face — badge text
+ */
+
+/* ── Root container ──────────────────────────────────────────────────────────── */
+
+.cnav-root {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── Flat screen ─────────────────────────────────────────────────────────────── */
+/* The always-present, always-interactive background layer.                       */
+/* The 3D overlay sits on top of it (z-index 100) during transitions only.        */
+
+.cnav-screen {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Built-in Navbar ─────────────────────────────────────────────────────────── */
+
+.cnav {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;          /* above the 3D overlay */
+  pointer-events: auto;
+}
+
+.cnav-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.24),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  white-space: nowrap;
+}
+
+/* Logo */
+.cnav-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(99, 102, 241, 0.85);
+  flex-shrink: 0;
+}
+
+.cnav-logo-icon {
+  font-size: 16px;
+  line-height: 1;
+  color: #fff;
+}
+
+/* Divider */
+.cnav-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* Links */
+.cnav-links {
+  position: relative;   /* anchor for the sliding pill */
+  display: flex;
+  align-items: center;
+  gap: var(--cnav-gap, 2px);
+}
+
+/* Sliding active-link highlight — position/width driven by GSAP */
+.cnav-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  border-radius: 100px;
+  background: rgba(99, 102, 241, 0.85);
+  will-change: transform, width;
+  pointer-events: none;
+}
+
+.cnav-link {
+  position: relative;   /* keep label above the pill */
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--cnav-pad-y, 6px) var(--cnav-pad-x, 12px);
+  border: none;
+  border-radius: 100px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.cnav-link:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cnav-link:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.cnav-link--active {
+  /* background comes from the sliding .cnav-pill */
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.cnav-link-icon {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Reserve the BOLD width of every label at all times, so the active-link
+   weight change (500 → 600) never resizes the button or the navbar pill.
+   Trick: an invisible zero-height bold copy of the text (from data-label)
+   stacked under the visible one defines the width. */
+.cnav-link-label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cnav-link-label::after {
+  content: attr(data-label);
+  font-weight: 600;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Badge */
+.cnav-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.cnav-badge-face {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  /* Fixed slot sized for the widest face name ("bottom") — the badge text
+     changes per screen and must not resize the navbar. */
+  min-width: 7ch;
+  text-align: center;
+}
+
+/* ── Mid-rotation zoom (depthScale) ──────────────────────────────────────── */
+/* Applied to the overlay wrapper: pull the whole projected cube back to      */
+/* --cnav-zoom at the halfway point of the transition, then return.           */
+
+@keyframes cnav-zoom {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(var(--cnav-zoom, 1)); }
+}
+
+/* ── View-transition modes (slide / fade) ────────────────────────────────── */
+/* Same-document CSS View Transitions, used when transitionStyle is 'slide'   */
+/* or 'fade'. Techniques:                                                      */
+/*   • .cnav-screen gets its own view-transition-name → only the screen        */
+/*     animates; the navbar is isolated under its own name and stays still.    */
+/*   • Direction comes from data-cnav-vt-dir on <html>, set by CubeNavigator.  */
+/*   • Everything sits behind prefers-reduced-motion: no-preference —          */
+/*     reduced-motion users get the browser's brief default cross-fade only    */
+/*     for 'fade' and no slide movement.                                       */
+/* Browser support: Chrome/Edge/Safari. Firefox: CubeNavigator falls back to   */
+/* an instant swap (these rules are simply never used).                        */
+
+@media (prefers-reduced-motion: no-preference) {
+  .cnav-screen { view-transition-name: cnav-screen; }
+  .cnav        { view-transition-name: cnav-navbar; }
+
+  /* Shared timing for the screen group in both modes.                         */
+  /* NOTE: ::view-transition-* pseudo-elements attach to the ROOT element —    */
+  /* the selector must be html…::view-transition-old(…) with NO descendant     */
+  /* space, or it matches nothing and the default cross-fade plays instead.    */
+  html[data-cnav-vt]::view-transition-old(cnav-screen),
+  html[data-cnav-vt]::view-transition-new(cnav-screen) {
+    animation-duration: var(--cnav-vt-duration, 0.6s);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Slide keyframes — old screen exits one way, new one enters from the other */
+  @keyframes cnav-vt-out-left  { to   { transform: translateX(-100vw); } }
+  @keyframes cnav-vt-in-right  { from { transform: translateX(100vw);  } }
+  @keyframes cnav-vt-out-right { to   { transform: translateX(100vw);  } }
+  @keyframes cnav-vt-in-left   { from { transform: translateX(-100vw); } }
+
+  html[data-cnav-vt='slide'][data-cnav-vt-dir='forward']::view-transition-old(cnav-screen) {
+    animation-name: cnav-vt-out-left;
+  }
+  html[data-cnav-vt='slide'][data-cnav-vt-dir='forward']::view-transition-new(cnav-screen) {
+    animation-name: cnav-vt-in-right;
+  }
+  html[data-cnav-vt='slide'][data-cnav-vt-dir='back']::view-transition-old(cnav-screen) {
+    animation-name: cnav-vt-out-right;
+  }
+  html[data-cnav-vt='slide'][data-cnav-vt-dir='back']::view-transition-new(cnav-screen) {
+    animation-name: cnav-vt-in-left;
+  }
+  /* 'fade' needs no extra rules — the group's default cross-fade applies,     */
+  /* just with the duration/easing above.                                      */
+}
+
+/* ── Scrollbar styling for screen content ─────────────────────────────────── */
+
+.cnav-screen::-webkit-scrollbar {
+  width: 4px;
+}
+.cnav-screen::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cnav-screen::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
